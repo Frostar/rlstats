@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Rocket League Stats</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawSheetName);
+
+    function drawSheetName() {
+      var URL = 'https://spreadsheets.google.com/tq?key=13Fd_3AbKTNgKAGmcBYDf-oeJbyACIIDlJilrBgqDkYk&tq?range=A3:C';
+
+      var queryString = "SELECT C, A / B";
+      var query = new google.visualization.Query(URL);
+      query.setQuery(queryString);
+      query.send(handleSampleDataQueryResponse);
+    }
+
+    function handleSampleDataQueryResponse(response) {
+      if (response.isError()) {
+        alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+        return;
+      }
+
+
+      var data = response.getDataTable();
+      data.setColumnLabel(1, 'Win Ratio [Win / Loss]');
+      var chart = new google.visualization.LineChart(document.getElementById('mychart'));
+
+       var options = {
+          backgroundColor: { fill: 'transparent' },
+          title: '3v3',
+          curveType: 'graph',
+          pointSize: 10,
+          titleTextStyle: { color: '#C0C0C0' },
+          hAxis: {textStyle:{color: '#BEBEBE'} },
+          legend: { textStyle: {color: '#BEBEBE'}},
+          lineWidth: 3,
+        };
+
+      chart.draw(data, options);
+    }
+
+  </script>
+</head>
+<style>
+body  {
+    background-image: url("background.jpg");
+    background-color: #cccccc;
+}
+.jumbotron {
+   background: rgb(128, 128, 128) !important;  /* This is for ie8 and below */
+   background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.jumbotron h1 {
+
+  color: #C0C0C0;
+}
+
+.jumbotron p {
+  color: #BEBEBE;
+}
+
+.mychart{
+   background: rgba(0, 0, 0, 0.5) !important;
+}
+
+</style>
+<body>
+  <div class="jumbotron text-center">
+  <h1>Rocket League Stats</h1>
+  <p>Some Rocket League stats for Wex, Sneakyjack & Bob Jylland</p> 
+</div>
+  <div id="mychart"/>
+</body>
